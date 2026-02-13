@@ -37,6 +37,9 @@ function App() {
           <span className="name-naive">Naive</span>
         </h1>
         <div className="accent-line" />
+        <a href="https://steamcommunity.com/id/GuroNaive/" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Steam">
+          <img src="/steam-svgrepo-com.svg" alt="Steam" className="social-icon" />
+        </a>
       </div>
     </div>
   )

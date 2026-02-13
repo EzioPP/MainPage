@@ -176,3 +176,37 @@
 .name-naive {
   color: rgb(255, 255, 255);
 }
+
+/* ─── Social Link ─── */
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  z-index: 1;
+}
+
+.social-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.05);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.social-link:hover .social-icon {
+  opacity: 0.9;
+}

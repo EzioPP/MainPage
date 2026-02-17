@@ -52,7 +52,6 @@ function LoginPopover({ isOpen, onClose, onSuccess }: LoginPopoverProps) {
             <input
               className="login-popover__input"
               type="text"
-              placeholder="seu_usuario"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               autoComplete="username"
@@ -64,7 +63,6 @@ function LoginPopover({ isOpen, onClose, onSuccess }: LoginPopoverProps) {
             <input
               className="login-popover__input"
               type="password"
-              placeholder="••••••••"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"

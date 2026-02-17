@@ -1,0 +1,106 @@
+/* ─── Container ─── */
+.image-profile {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Background Image ─── */
+.image-profile__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* ─── Dark Overlay ─── */
+.image-profile__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* ─── Vignette ─── */
+.image-profile__vignette {
+  z-index: 2;
+}
+
+/* ─── Content ─── */
+.image-profile__content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  animation: image-contentIn 1.2s ease-out;
+}
+
+@keyframes image-contentIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Tagline ─── */
+.image-profile__tagline {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 1.5px;
+  text-transform: lowercase;
+  font-style: italic;
+  margin: 0;
+  font-weight: 500;
+  text-shadow:
+    0 0 10px rgba(0, 0, 0, 1),
+    0 2px 12px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Login Button ─── */
+.image-profile__login {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 4;
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 12, 18, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.image-profile__login:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 600px) {
+  .image-profile__login {
+    top: 16px;
+    right: 16px;
+    padding: 0 20px;
+    font-size: 0.85rem;
+  }
+}

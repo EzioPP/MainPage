@@ -1,0 +1,39 @@
+.profile-name {
+  font-size: 5.5rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -3px;
+  line-height: 1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ─── Glass variant ─── */
+.profile-name--glass {
+  z-index: 1;
+}
+
+.profile-name--glass .profile-name__first {
+  color: #ffffff;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.15), 0 0 60px rgba(255, 255, 255, 0.05);
+}
+
+.profile-name--glass .profile-name__last {
+  color: rgb(255, 255, 255);
+}
+
+/* ─── Image variant ─── */
+.profile-name--image .profile-name__first {
+  color: #fff;
+  text-shadow:
+    0 0 40px rgba(0, 0, 0, 0.8),
+    0 0 80px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.profile-name--image .profile-name__last {
+  color: rgba(255, 255, 255, 0.6);
+  text-shadow:
+    0 0 40px rgba(0, 0, 0, 0.8),
+    0 0 80px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+}

@@ -1,0 +1,141 @@
+/* ─── Container ─── */
+.glass-profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ─── Ambient Orbs ─── */
+.glass-profile__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: glass-float 20s ease-in-out infinite;
+}
+
+.glass-profile__orb--1 {
+  width: 400px;
+  height: 400px;
+  background: #4a6cf7;
+  top: -10%;
+  left: -5%;
+  animation-delay: 0s;
+}
+
+.glass-profile__orb--2 {
+  width: 300px;
+  height: 300px;
+  background: #2dd4bf;
+  bottom: -10%;
+  right: -5%;
+  animation-delay: -7s;
+}
+
+.glass-profile__orb--3 {
+  width: 200px;
+  height: 200px;
+  background: #818cf8;
+  top: 50%;
+  left: 60%;
+  animation-delay: -14s;
+}
+
+@keyframes glass-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+/* ─── Particles ─── */
+.glass-profile__particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glass-profile__particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.glass-profile__particle--path-1 { animation: glass-drift1 linear infinite; }
+.glass-profile__particle--path-2 { animation: glass-drift2 linear infinite; }
+.glass-profile__particle--path-3 { animation: glass-drift3 linear infinite; }
+.glass-profile__particle--path-4 { animation: glass-drift4 linear infinite; }
+
+@keyframes glass-drift1 {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(80px, -60px); }
+  50%  { transform: translate(-30px, -140px); }
+  75%  { transform: translate(50px, -40px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes glass-drift2 {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-70px, -90px); }
+  50%  { transform: translate(40px, -50px); }
+  75%  { transform: translate(-20px, -120px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes glass-drift3 {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(50px, 70px); }
+  50%  { transform: translate(-60px, -30px); }
+  75%  { transform: translate(30px, -100px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes glass-drift4 {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-40px, -110px); }
+  50%  { transform: translate(70px, 20px); }
+  75%  { transform: translate(-50px, -70px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ─── Fullscreen Glass ─── */
+.glass-profile__glass {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: none;
+  z-index: 1;
+  animation: glass-fadeIn 1s ease-out;
+}
+
+@keyframes glass-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

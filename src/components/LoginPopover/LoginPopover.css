@@ -1,0 +1,167 @@
+.login-popover {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+}
+
+.login-popover__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.login-popover__card {
+  position: relative;
+  overflow: hidden;
+  width: min(420px, 90vw);
+  padding: 2.4rem 2.6rem 2.2rem;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(8, 10, 18, 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    inset 0 0 30px rgba(255, 255, 255, 0.08);
+  animation: login-popover-in 0.25s ease-out;
+}
+
+.login-popover__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 140% at 10% 10%, rgba(255, 255, 255, 0.18), transparent 55%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes login-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-popover__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  font-weight: 600;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.login-popover__header {
+  margin-bottom: 1.6rem;
+}
+
+.login-popover__eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.login-popover__title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.login-popover__form {
+  display: grid;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.login-popover__label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.login-popover__input {
+  height: 44px;
+  border-radius: 12px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.login-popover__input:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.login-popover__submit {
+  height: 46px;
+  margin-top: 0.5rem;
+  border-radius: 14px;
+  border: 0;
+  background: linear-gradient(135deg, #ffffff, #c0c7ff);
+  color: #0a0b10;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-popover__submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  box-shadow: none;
+}
+
+.login-popover__error {
+  margin: 0.2rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 90, 90, 0.12);
+  border: 1px solid rgba(255, 90, 90, 0.3);
+  color: rgba(255, 210, 210, 0.95);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.login-popover__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(120, 140, 255, 0.25);
+}
+
+@media (max-width: 520px) {
+  .login-popover__card {
+    padding: 2rem 1.8rem;
+  }
+}

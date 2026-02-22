@@ -1,39 +1,257 @@
-.profile-name {
-  font-size: 5.5rem;
-  font-weight: 800;
-  margin: 0;
-  letter-spacing: -3px;
-  line-height: 1;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800&display=swap');
+
+/* ─── Container ─── */
+.glass-profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
 }
 
-/* ─── Glass variant ─── */
-.profile-name--glass {
+/* ─── Ambient Orbs ─── */
+.glass-profile__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.28;               /* was 0.15 — double-blur from glass layer was washing them out */
+  pointer-events: none;
+  animation: glass-float 20s ease-in-out infinite;
+}
+
+.glass-profile__orb--1 {
+  width: 400px; height: 400px;
+  background: #4a6cf7;
+  top: -10%; left: -5%;
+  animation-delay: 0s;
+}
+.glass-profile__orb--2 {
+  width: 300px; height: 300px;
+  background: #2dd4bf;
+  bottom: -10%; right: -5%;
+  animation-delay: -7s;
+}
+.glass-profile__orb--3 {
+  width: 200px; height: 200px;
+  background: #818cf8;
+  top: 50%; left: 60%;
+  animation-delay: -14s;
+}
+
+@keyframes glass-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -40px) scale(1.05); }
+  66%       { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* ─── Particles ─── */
+.glass-profile__particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glass-profile__particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.glass-profile__particle--path-1 { animation: glass-drift1 linear infinite; }
+.glass-profile__particle--path-2 { animation: glass-drift2 linear infinite; }
+.glass-profile__particle--path-3 { animation: glass-drift3 linear infinite; }
+.glass-profile__particle--path-4 { animation: glass-drift4 linear infinite; }
+
+@keyframes glass-drift1 {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(80px,-60px); }
+  50%  { transform: translate(-30px,-140px); }
+  75%  { transform: translate(50px,-40px); }
+  100% { transform: translate(0,0); }
+}
+@keyframes glass-drift2 {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-70px,-90px); }
+  50%  { transform: translate(40px,-50px); }
+  75%  { transform: translate(-20px,-120px); }
+  100% { transform: translate(0,0); }
+}
+@keyframes glass-drift3 {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(50px,70px); }
+  50%  { transform: translate(-60px,-30px); }
+  75%  { transform: translate(30px,-100px); }
+  100% { transform: translate(0,0); }
+}
+@keyframes glass-drift4 {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-40px,-110px); }
+  50%  { transform: translate(70px,20px); }
+  75%  { transform: translate(-50px,-70px); }
+  100% { transform: translate(0,0); }
+}
+
+/* ─── Fullscreen Glass ─── */
+.glass-profile__glass {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
   z-index: 1;
+  animation: glass-fadeIn 1s ease-out;
 }
 
-.profile-name--glass .profile-name__first {
-  color: #ffffff;
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.15), 0 0 60px rgba(255, 255, 255, 0.05);
+@keyframes glass-fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.profile-name--glass .profile-name__last {
-  color: rgb(255, 255, 255);
+/* ══════════════════════════════════════════
+   LOCKUP — icon left, wordmark right
+══════════════════════════════════════════ */
+
+.glass-profile__lockup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 44px);                          /* was 44px fixed */
+  padding: clamp(32px, 6vw, 96px) clamp(24px, 8vw, 112px); /* was 96px 112px fixed */
 }
 
-/* ─── Image variant ─── */
-.profile-name--image .profile-name__first {
-  color: #fff;
-  text-shadow:
-    0 0 40px rgba(0, 0, 0, 0.8),
-    0 0 80px rgba(0, 0, 0, 0.4),
-    0 2px 4px rgba(0, 0, 0, 0.9);
+.glass-profile__logo {
+  filter: drop-shadow(0 0 20px rgba(167,139,250,0.2));
 }
 
-.profile-name--image .profile-name__last {
-  color: rgba(255, 255, 255, 0.6);
-  text-shadow:
-    0 0 40px rgba(0, 0, 0, 0.8),
-    0 0 80px rgba(0, 0, 0, 0.4),
-    0 2px 4px rgba(0, 0, 0, 0.9);
+/* ─── Wordmark column ─── */
+.glass-profile__wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Glitch text ─── */
+.glass-profile__glitch-wrap {
+  position: relative;
+  line-height: 1;
+  display: inline-block;
+  isolation: isolate;
+}
+
+.glass-profile__glitch-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(48px, 8vw, 104px);   /* was 104px fixed — now fluid */
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: #e2e2f0;
+  position: relative;
+  display: block;
+  animation: gp-flicker 6s infinite;
+}
+
+/* cyan ghost — desaturated to match palette */
+.glass-profile__glitch-text::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(48px, 8vw, 104px);   /* must match main or ghosts desync */
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: #7fefef;                        /* was #0ff — toned to fit cool palette */
+  clip-path: polygon(0 20%, 100% 20%, 100% 35%, 0 35%);
+  animation: gp-glitch-top 4s infinite;
+}
+
+/* magenta ghost — desaturated to match palette */
+.glass-profile__glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(48px, 8vw, 104px);   /* must match main or ghosts desync */
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: #e87fff;                        /* was #f0f — toned to fit cool palette */
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  animation: gp-glitch-bot 4s infinite;
+}
+
+/* ─── Tagline ─── */
+.glass-profile__tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  letter-spacing: 8px;
+  color: rgba(255,255,255,0.48);         /* was 0.13 — nearly invisible, bumped for legibility */
+  text-transform: uppercase;
+  margin: 0;
+  animation: gp-tag-flicker 4s infinite;
+}
+
+.glass-profile__tagline-accent {
+  color: rgba(167,139,250,0.82);         /* was 0.53 — bumped for contrast */
+}
+
+/* ══════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════ */
+
+@keyframes gp-flicker {
+  0%, 97%, 100% { opacity: 1; }
+  98%   { opacity: 0.85; }
+  98.5% { opacity: 1; }
+  99%   { opacity: 0.7; }
+  99.5% { opacity: 1; }
+}
+
+@keyframes gp-glitch-top {
+  0%, 88%, 100% { transform: translate(0); opacity: 0; }
+  89%  { transform: translate(-4px, -1px); opacity: 1; }
+  91%  { transform: translate( 4px,  1px); opacity: 1; }
+  93%  { transform: translate(-2px,  0);   opacity: 1; }
+  95%  { transform: translate(0);          opacity: 0; }
+}
+
+@keyframes gp-glitch-bot {
+  0%, 88%, 100% { transform: translate(0); opacity: 0; }
+  89%  { transform: translate( 4px,  1px); opacity: 1; }
+  91%  { transform: translate(-4px, -1px); opacity: 1; }
+  93%  { transform: translate( 2px,  0);   opacity: 1; }
+  95%  { transform: translate(0);          opacity: 0; }
+}
+
+@keyframes gp-tag-flicker {
+  0%, 88%, 100% { opacity: 1;   transform: translateX(0); }
+  89%           { opacity: 0.6; transform: translateX(-2px); }
+  91%           { opacity: 1;   transform: translateX(1px); }
+  93%           { opacity: 0.8; transform: translateX(0); }
+}
+
+/* ══════════════════════════════════════════
+   REDUCED MOTION
+══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-profile__orb,
+  .glass-profile__particle,
+  .glass-profile__glass,
+  .glass-profile__glitch-text,
+  .glass-profile__glitch-text::before,
+  .glass-profile__glitch-text::after,
+  .glass-profile__tagline {
+    animation: none;
+  }
 }

@@ -5,12 +5,13 @@ import './styles/global.css'
 import ImageProfile from './pages/ImageProfile/ImageProfile'
 import Files from './pages/Files/Files'
 import RequireAuth from './components/RequireAuth'
+import GlassProfile from './pages/GlassProfile/GlassProfile'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ImageProfile />} />
+        <Route path="/" element={<GlassProfile />} />
         <Route path="/files" element={
           <RequireAuth>
             <Files onBack={() => window.history.back()} />

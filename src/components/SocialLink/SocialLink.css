@@ -2,62 +2,165 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  transition: all 0.3s ease;
   text-decoration: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
 .social-link__icon {
-  width: 20px;
-  height: 20px;
   filter: invert(1);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s, filter 0.2s;
+  position: relative;
+  z-index: 1;
 }
 
 /* ─── Glass variant ─── */
 .social-link--glass {
-  width: 42px;
-  height: 42px;
-  background: #3a3a3a;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  background: rgba(167, 139, 250, 0.05);
   z-index: 1;
 }
 
-.social-link--glass:hover {
-  background: #4a4a4a;
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.05);
+.social-link--glass .social-link__icon {
+  width: 32px;
+  height: 32px;
+  opacity: 0.55;                          /* was 0.45 — a touch more visible at rest */
+  filter: invert(1) sepia(1) saturate(0);
 }
 
-.social-link--glass .social-link__icon {
-  opacity: 0.5;
+/* hover — palette-matched cyan (#7fefef) instead of raw #0ff */
+.social-link--glass:hover {
+  border-color: #7fefef;
+  background: rgba(127, 239, 239, 0.06);
+  box-shadow: 0 0 18px rgba(127, 239, 239, 0.18);
+  animation: sl-glitch-hover 0.4s steps(1) 1;
 }
 
 .social-link--glass:hover .social-link__icon {
-  opacity: 0.9;
+  opacity: 1;
+  /* hue-rotate tuned so invert(1)+sepia(1)+saturate lands on #7fefef */
+  filter: invert(1) sepia(1) saturate(3) hue-rotate(155deg);
+}
+
+/* ghost shadow layers */
+.social-link--glass::before,
+.social-link--glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* palette-matched ghost: soft cyan + soft magenta */
+.social-link--glass:hover::before {
+  box-shadow:
+    -3px 0 0 rgba(127, 239, 239, 0.4),
+    3px  0 0 rgba(232, 127, 255, 0.4);  /* #e87fff */
+  opacity: 1;
+  animation: sl-ghost 0.4s steps(1) 1;
 }
 
 /* ─── Image variant ─── */
 .social-link--image {
-  width: 44px;
-  height: 44px;
-  background: #3a3a3a;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(10, 10, 20, 0.5);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-.social-link--image:hover {
-  background: #4a4a4a;
-  border-color: rgba(255, 255, 255, 0.35);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .social-link--image .social-link__icon {
-  opacity: 0.8;
+  width: 32px;
+  height: 32px;
+  opacity: 0.7;
+}
+
+.social-link--image:hover {
+  border-color: #7fefef;
+  background: rgba(127, 239, 239, 0.06);
+  box-shadow: 0 0 18px rgba(127, 239, 239, 0.18);
 }
 
 .social-link--image:hover .social-link__icon {
   opacity: 1;
+  filter: invert(1) sepia(1) saturate(3) hue-rotate(155deg);
+}
+
+.social-link--image:hover::before {
+  box-shadow:
+    -3px 0 0 rgba(127, 239, 239, 0.4),
+    3px  0 0 rgba(232, 127, 255, 0.4);
+  opacity: 1;
+  animation: sl-ghost 0.4s steps(1) 1;
+}
+
+/* ─── Idle glitch pulse — synced to 4s UI rhythm ─── */
+/*
+ * Applied only to the glass variant; image variant is typically used
+ * in more static contexts where a persistent idle pulse looks odd.
+ */
+.social-link--glass {
+  animation: sl-idle-glitch 4s infinite;
+}
+
+@keyframes sl-idle-glitch {
+  0%, 88%, 100% { box-shadow: none; }
+  89% {
+    box-shadow:
+      -2px 0 0 rgba(127, 239, 239, 0.3),   /* #7fefef */
+       2px 0 0 rgba(232, 127, 255, 0.3);   /* #e87fff */
+  }
+  92% {
+    box-shadow:
+       2px 0 0 rgba(127, 239, 239, 0.2),
+      -2px 0 0 rgba(232, 127, 255, 0.2);
+  }
+  95% { box-shadow: none; }
+}
+
+/* ─── Glitch keyframes ─── */
+
+@keyframes sl-glitch-hover {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3px, 0); border-color: #e87fff; }
+  40%  { transform: translate( 3px, 0); border-color: #7fefef; }
+  60%  { transform: translate(-2px, 0); border-color: #e87fff; }
+  80%  { transform: translate( 1px, 0); border-color: #7fefef; }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes sl-ghost {
+  0%   { opacity: 1;   transform: translate(-2px, 0); }
+  33%  { opacity: 0.6; transform: translate( 2px, 0); }
+  66%  { opacity: 1;   transform: translate(-1px, 0); }
+  100% { opacity: 0;   transform: translate(0,    0); }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .social-link,
+  .social-link__icon,
+  .social-link--glass,
+  .social-link--image {
+    animation: none;
+    transition: none;
+  }
+
+  .social-link--glass:hover,
+  .social-link--image:hover {
+    animation: none;
+  }
+
+  .social-link--glass:hover::before,
+  .social-link--image:hover::before {
+    animation: none;
+  }
 }

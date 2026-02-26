@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SocialLink from '../../components/SocialLink/SocialLink'
 import AccentLine from '../../components/AccentLine'
 import Vignette from '../../components/Vignette'
@@ -18,7 +19,28 @@ interface Particle {
   driftClass: string
 }
 
+// ── GuroZord inline SVG icon (eye only, no background) ──────────────
+function GuroZordIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gp-ig" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stopColor="#a78bfa" />
+          <stop offset="100%" stopColor="#818cf8" />
+        </linearGradient>
+      </defs>
+      <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="10.25"
+        stroke="url(#gp-ig)" strokeOpacity="0.35" strokeWidth="1.5" />
+      <path d="M10 32 Q32 14 54 32 Q32 50 10 32 Z"
+        stroke="url(#gp-ig)" strokeWidth="2" fill="none" strokeLinejoin="round" />
+      <circle cx="32" cy="32" r="8"  stroke="url(#gp-ig)" strokeWidth="2" fill="none" />
+      <circle cx="32" cy="32" r="3"  fill="url(#gp-ig)" />
+    </svg>
+  )
+}
+
 function GlassProfile() {
+  const navigate = useNavigate()
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem('authToken')))
 
@@ -111,6 +133,7 @@ function GlassProfile() {
           </div>
         </div>
 
+        {/* Social links */}
         <nav aria-label="Social links" style={{ display: 'flex', gap: '12px' }}>
           <SocialLink
             href="https://steamcommunity.com/id/GuroNaive/"
@@ -125,6 +148,25 @@ function GlassProfile() {
             variant="glass"
           />
         </nav>
+
+        {/* ── Meus Produtos ── */}
+        <div className="glass-profile__products">
+          <p className="glass-profile__products-label">Meus Produtos</p>
+          <button
+            className="glass-profile__product-card"
+            type="button"
+            onClick={() => navigate('/gurozord')}
+          >
+            <GuroZordIcon size={22} />
+            <div className="glass-profile__product-info">
+              <span className="glass-profile__product-name">GuroZord</span>
+              <span className="glass-profile__product-desc">Bot de gestão de grupos no WhatsApp</span>
+            </div>
+            <svg className="glass-profile__product-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <LoginPopover

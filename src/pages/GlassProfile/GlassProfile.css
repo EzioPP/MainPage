@@ -293,3 +293,91 @@
     animation: none;
   }
 }
+
+/* ══════════════════════════════════════════
+   MEUS PRODUTOS — adicionar ao final do GlassProfile.css
+══════════════════════════════════════════ */
+
+.glass-profile__products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.glass-profile__products-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(167, 139, 250, 0.45);
+  margin: 0;
+}
+
+.glass-profile__product-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.15);
+  background: rgba(167, 139, 250, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.2s;
+  min-width: 280px;
+  text-align: left;
+}
+
+.glass-profile__product-card:hover {
+  border-color: rgba(167, 139, 250, 0.45);
+  background: rgba(167, 139, 250, 0.1);
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.2);
+  transform: translateY(-2px);
+}
+
+.glass-profile__product-card:active {
+  transform: translateY(0);
+}
+
+.glass-profile__product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.glass-profile__product-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+  color: rgba(196, 181, 253, 0.95);
+}
+
+.glass-profile__product-desc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.glass-profile__product-arrow {
+  color: rgba(167, 139, 250, 0.4);
+  flex-shrink: 0;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.glass-profile__product-card:hover .glass-profile__product-arrow {
+  color: rgba(167, 139, 250, 0.9);
+  transform: translateX(3px);
+}
+
+@media (max-width: 600px) {
+  .glass-profile__product-card {
+    min-width: 0;
+    width: 100%;
+  }
+}

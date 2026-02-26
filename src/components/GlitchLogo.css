@@ -23,18 +23,47 @@
   animation: icon-glitch-m 4s infinite;
 }
 
+/* Organic idle float for the base circle */
+.glitch-logo__dot--base {
+  animation: dot-float 6s ease-in-out infinite;
+  transform-origin: 35px 35px;
+}
+
+/* Subtle breathing pulse */
+.glitch-logo__dot--pulse {
+  animation: dot-pulse 3s ease-in-out infinite;
+  transform-origin: 35px 35px;
+}
+
+@keyframes dot-float {
+  0%   { transform: translate(0px, 0px); }
+  25%  { transform: translate(0.8px, -1.2px); }
+  50%  { transform: translate(-0.5px, -1.8px); }
+  75%  { transform: translate(-1px, -0.6px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { r: 3; opacity: 0.9; }
+  50%       { r: 3.5; opacity: 1; }
+}
+
 @keyframes icon-glitch-c {
-  0%, 89%, 100% { transform: translate(0, 0); opacity: 0; }
-  90%            { transform: translate(-3px,  1px); opacity: 0.6; }
-  93%            { transform: translate( 2px, -1px); opacity: 0.4; }
-  96%            { transform: translate(-1px,  2px); opacity: 0.6; }
-  99%            { transform: translate(0, 0);        opacity: 0; }
+  0%, 89%  { transform: translate(0, 0); opacity: 0; }
+  90%      { transform: translate(-3px,  1px); opacity: 0.6; animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  92%      { transform: translate( 1.5px, -0.5px); opacity: 0.5; animation-timing-function: ease-out; }
+  94%      { transform: translate( 2px, -1px); opacity: 0.4; }
+  96%      { transform: translate(-1px,  2px); opacity: 0.55; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  98%      { transform: translate(0.5px, 0.5px); opacity: 0.2; }
+  99%, 100%{ transform: translate(0, 0); opacity: 0; }
 }
 
 @keyframes icon-glitch-m {
-  0%, 89%, 100% { transform: translate(0, 0); opacity: 0; }
-  90%            { transform: translate( 3px, -1px); opacity: 0.5; }
-  93%            { transform: translate(-2px,  1px); opacity: 0.3; }
-  96%            { transform: translate( 1px, -2px); opacity: 0.5; }
-  99%            { transform: translate(0, 0);        opacity: 0; }
+  0%, 89%  { transform: translate(0, 0); opacity: 0; }
+  90%      { transform: translate( 3px, -1px); opacity: 0.5; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  92%      { transform: translate(-1px,  0.5px); opacity: 0.45; animation-timing-function: ease-in-out; }
+  94%      { transform: translate(-2px,  1px); opacity: 0.3; }
+  96%      { transform: translate( 1px, -2px); opacity: 0.5; animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  98%      { transform: translate(-0.5px, 0.5px); opacity: 0.15; }
+  99%, 100%{ transform: translate(0, 0); opacity: 0; }
 }

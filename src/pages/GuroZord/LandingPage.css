@@ -68,16 +68,7 @@
   transition: width 0.2s, height 0.2s, border-color 0.2s;
 }
 
-/* ── Reveal ──────────────────────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* ── Reveal handled by framer-motion ───────────────────────────────────────── */
 
 /* ── Animations ──────────────────────────────────────────────────── */
 @keyframes lp-fadeUp {
@@ -201,8 +192,8 @@
   overflow: hidden;
 }
 
-.lp-hero::after {
-  content: '';
+/* Hero background orbs — now real elements for framer-motion parallax */
+.lp-hero__orb1 {
   position: absolute;
   width: 700px;
   height: 700px;
@@ -211,6 +202,7 @@
   transform: translate(-50%, -55%);
   pointer-events: none;
   animation: lp-pulse 6s ease-in-out infinite;
+  will-change: transform;
 }
 
 .lp-hero__orb2 {
@@ -221,6 +213,7 @@
   top: 60%; left: 20%;
   pointer-events: none;
   animation: lp-pulse 8s ease-in-out infinite reverse;
+  will-change: transform;
 }
 
 .lp-hero__badge {
@@ -237,7 +230,6 @@
   border-radius: 100px;
   margin-bottom: 2.2rem;
   background: var(--lp-purple-dim);
-  animation: lp-fadeUp 0.8s ease both;
   position: relative;
   z-index: 1;
 }
@@ -259,7 +251,6 @@
   color: var(--lp-white);
   position: relative;
   z-index: 1;
-  animation: lp-fadeUp 0.9s ease 0.1s both;
   overflow: visible;
 }
 
@@ -277,7 +268,6 @@
   max-width: 520px;
   line-height: 1.7;
   font-weight: 400;
-  animation: lp-fadeUp 1s ease 0.2s both;
   position: relative;
   z-index: 1;
 }
@@ -288,7 +278,6 @@
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
-  animation: lp-fadeUp 1s ease 0.3s both;
   position: relative;
   z-index: 1;
 }
@@ -305,7 +294,6 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--lp-muted);
-  animation: lp-fadeUp 1s ease 0.5s both;
   position: relative;
   z-index: 1;
 }

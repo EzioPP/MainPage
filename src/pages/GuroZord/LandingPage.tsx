@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import './LandingPage.css'
 
 const FEATURES = [
@@ -120,18 +121,7 @@ function Cursor() {
   )
 }
 
-// ── Scroll-reveal hook ─────────────────────────────────────────────
-function useReveal() {
-  useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>('.reveal')
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
-      { threshold: 0.12 },
-    )
-    els.forEach(el => io.observe(el))
-    return () => io.disconnect()
-  }, [])
-}
+// ── Scroll-reveal hook removed — framer-motion handles reveals ──
 
 // ── Logo SVG ───────────────────────────────────────────────────────
 function LogoIcon({ size = 32 }: { size?: number }) {
@@ -165,7 +155,32 @@ function DiscordIcon({ size = 24 }: { size?: number }) {
 // ── Main component ─────────────────────────────────────────────────
 export default function LandingPage() {
   const navigate = useNavigate()
-  useReveal()
+  const prefersReduced = useReducedMotion()
+  const heroRef = useRef<HTMLElement>(null)
+
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const { scrollYProgress: pageProgress } = useScroll()
+
+  // Hero parallax: background orbs move slower, subtitle moves faster
+  const orbY = useTransform(heroProgress, [0, 1], prefersReduced ? [0, 0] : [0, -120])
+  const badgeY = useTransform(heroProgress, [0, 1], prefersReduced ? [0, 0] : [0, -30])
+  const subY = useTransform(heroProgress, [0, 1], prefersReduced ? [0, 0] : [0, 60])
+  const scrollHintOpacity = useTransform(heroProgress, [0, 0.25], [1, 0])
+  const ctaGlowY = useTransform(pageProgress, [0, 1], prefersReduced ? [0, 0] : [40, -40])
+
+  // Shared animation props
+  const fadeUp = prefersReduced
+    ? {}
+    : {
+        initial: { opacity: 0, y: 32 } as const,
+        whileInView: { opacity: 1, y: 0 } as const,
+        viewport: { once: true, amount: 0.12 as const },
+        transition: { duration: 0.7, ease: 'easeOut' as const },
+      }
 
   return (
     <div className="lp">
@@ -192,83 +207,145 @@ export default function LandingPage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section className="lp-hero" id="hero">
-        <div className="lp-hero__orb2" />
-        <span className="lp-hero__badge">
+      <section className="lp-hero" id="hero" ref={heroRef}>
+        {/* Background orbs — parallax (slowest layer) */}
+        <motion.div className="lp-hero__orb1" style={{ y: orbY }} />
+        <motion.div className="lp-hero__orb2" style={{ y: orbY }} />
+
+        <motion.span
+          className="lp-hero__badge"
+          style={{ y: badgeY }}
+        >
           <span className="lp-hero__badge-dot" />
           Bot de Gestão de Grupos no WhatsApp
-        </span>
-        <h1 className="lp-hero__title">
+        </motion.span>
+
+        <motion.h1
+          className="lp-hero__title"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.1, ease: 'easeOut' }}
+        >
           Do Caos<br />
           <span className="lp-hero__accent">Surgiu a Ordem.</span>
-        </h1>
-        <p className="lp-hero__sub">
+        </motion.h1>
+
+        <motion.p
+          className="lp-hero__sub"
+          style={{ y: subY }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
+        >
           O GuroZord aplica as regras do seu grupo automaticamente — 24/7. Moderação,
           agendamentos, controles inteligentes de admin e muito mais. Feito pra você
           não precisar ficar babá do grupo.
-        </p>
-        <div className="lp-hero__actions">
+        </motion.p>
+
+        <motion.div
+          className="lp-hero__actions"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+        >
           <a href="#waitlist" className="lp-btn-primary">Entrar na Lista de Espera</a>
           <a href="#features" className="lp-btn-ghost">Ver Funcionalidades</a>
-        </div>
-        <div className="lp-scroll-hint">
+        </motion.div>
+
+        <motion.div className="lp-scroll-hint" style={{ opacity: scrollHintOpacity }}>
           <div className="lp-scroll-hint__line" />
           Role
-        </div>
+        </motion.div>
       </section>
 
       {/* ── STATS ── */}
-      <div className="lp-stats reveal">
+      <motion.div
+        className="lp-stats"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6 }}
+      >
         {[
           { num: '24/7', label: 'Sempre de olho'       },
           { num: '0ms',  label: 'Esforço manual'       },
           { num: '∞',    label: 'Regras do seu jeito'  },
           { num: '1',    label: 'Bot pra dominar tudo' },
-        ].map(s => (
-          <div key={s.label} className="lp-stats__item">
+        ].map((s, i) => (
+          <motion.div
+            key={s.label}
+            className="lp-stats__item"
+            initial={prefersReduced ? {} : { opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20, delay: i * 0.08 }}
+          >
             <div className="lp-stats__num">{s.num}</div>
             <div className="lp-stats__label">{s.label}</div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* ── FEATURES ── */}
       <section id="features" className="lp-section">
         <div className="lp-section__inner">
-          <p className="lp-eyebrow reveal">O que ele faz</p>
-          <h2 className="lp-title reveal">
+          <motion.p className="lp-eyebrow" {...fadeUp}>O que ele faz</motion.p>
+          <motion.h2 className="lp-title" {...fadeUp}>
             Tudo que os admins do seu grupo<br />sempre quiseram ter.
-          </h2>
-          <p className="lp-desc reveal">
+          </motion.h2>
+          <motion.p className="lp-desc" {...fadeUp}>
             O GuroZord roda silenciosamente em segundo plano, cuidando do que
             sempre escapa pelo vão dos dedos.
-          </p>
-          <div className="lp-features reveal">
+          </motion.p>
+          <motion.div
+            className="lp-features"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.08 } },
+            }}
+          >
             {FEATURES.map(f => (
-              <div key={f.title} className="lp-feat">
+              <motion.div
+                key={f.title}
+                className="lp-feat"
+                variants={prefersReduced ? {} : {
+                  hidden: { opacity: 0, y: 28, scale: 0.95 },
+                  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
+                }}
+              >
                 <div className="lp-feat__icon">{f.icon}</div>
                 <div className="lp-feat__title">{f.title}</div>
                 <div className="lp-feat__desc">{f.desc}</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
       <section id="how" className="lp-section lp-section--alt">
         <div className="lp-section__inner">
-          <p className="lp-eyebrow reveal">Como funciona</p>
-          <h2 className="lp-title reveal">Funcionando<br />em minutos.</h2>
+          <motion.p className="lp-eyebrow" {...fadeUp}>Como funciona</motion.p>
+          <motion.h2 className="lp-title" {...fadeUp}>Funcionando<br />em minutos.</motion.h2>
           <div className="lp-steps">
-            {STEPS.map(s => (
-              <div key={s.num} className="lp-step reveal">
+            {STEPS.map((s, i) => (
+              <motion.div
+                key={s.num}
+                className="lp-step"
+                initial={prefersReduced ? {} : { opacity: 0, x: -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.12 }}
+              >
                 <div className="lp-step__num">{s.num}</div>
                 <div className="lp-step__body">
                   <h3>{s.title}</h3>
                   <p>{s.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -276,9 +353,15 @@ export default function LandingPage() {
 
       {/* ── WAITLIST / DISCORD CTA ── */}
       <section id="waitlist" className="lp-section lp-section--cta">
-        <div className="lp-cta-glow" />
+        <motion.div
+          className="lp-cta-glow"
+          style={{ y: ctaGlowY }}
+        />
         <div className="lp-section__inner lp-section__inner--center">
-          <div className="lp-cta-box reveal">
+          <motion.div
+            className="lp-cta-box"
+            {...fadeUp}
+          >
             <p className="lp-eyebrow">Acesso antecipado</p>
             <h2 className="lp-title">Pronto pra restaurar a ordem?</h2>
             <p className="lp-desc lp-desc--center">
@@ -297,7 +380,7 @@ export default function LandingPage() {
             <p className="lp-cta-note">
               Respondo rápido. Só mandar mensagem e a gente conversa.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 

@@ -1,16 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800&display=swap');
 
-/* ─── Container ─── */
+/* ─── Container — scrollable for parallax ─── */
 .glass-profile {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   width: 100%;
-  overflow: hidden;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: #000;
+  scroll-behavior: smooth;
+}
+
+/* ─── Background layer (parallax container for orbs) ─── */
+.glass-profile__bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 0;
 }
 
 /* ─── Ambient Orbs ─── */
@@ -18,7 +25,7 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(100px);
-  opacity: 0.28;               /* was 0.15 — double-blur from glass layer was washing them out */
+  opacity: 0.28;
   pointer-events: none;
   animation: glass-float 20s ease-in-out infinite;
 }
@@ -48,12 +55,13 @@
   66%       { transform: translate(-20px, 20px) scale(0.95); }
 }
 
-/* ─── Particles ─── */
+/* ─── Particles (mid parallax layer) ─── */
 .glass-profile__particles {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  will-change: transform;
 }
 
 .glass-profile__particle {
@@ -97,20 +105,68 @@
   100% { transform: translate(0,0); }
 }
 
-/* ─── Fullscreen Glass ─── */
+/* ─── Glass layer — spans full scrollable height ─── */
 .glass-profile__glass {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
   background: rgba(255,255,255,0.03);
   backdrop-filter: blur(16px) saturate(120%);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
   z-index: 1;
   animation: glass-fadeIn 1s ease-out;
+}
+
+/* ─── Zones ─── */
+.glass-profile__zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.glass-profile__zone--hero {
+  min-height: 100vh;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+}
+
+.glass-profile__zone--below {
+  min-height: 100vh;
+  justify-content: center;
+  gap: 3rem;
+  padding: 6rem 2rem 8rem;
+}
+
+/* ─── Scroll hint ─── */
+.glass-profile__scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(167, 139, 250, 0.45);
+  position: absolute;
+  bottom: 3rem;
+}
+
+.glass-profile__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(167, 139, 250, 0.6), transparent);
+  animation: gp-scrollDrop 1.6s ease-in-out infinite;
+}
+
+@keyframes gp-scrollDrop {
+  0%   { transform: scaleY(0); transform-origin: top;    }
+  50%  { transform: scaleY(1); transform-origin: top;    }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
 @keyframes glass-fadeIn {
@@ -242,10 +298,10 @@
 
 /* ─── Login Button ─── */
 .glass-profile__login {
-  position: absolute;
+  position: fixed;
   top: 24px;
   right: 24px;
-  z-index: 2;
+  z-index: 200;
   height: 40px;
   padding: 0 24px;
   border-radius: 999px;
@@ -295,8 +351,43 @@
 }
 
 /* ══════════════════════════════════════════
-   MEUS PRODUTOS — adicionar ao final do GlassProfile.css
+   MEUS PRODUTOS — full showcase section
 ══════════════════════════════════════════ */
+
+.glass-profile__section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.8rem;
+}
+
+.glass-profile__section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(167, 139, 250, 0.5);
+}
+
+.glass-profile__section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: rgba(226, 226, 240, 0.95);
+  margin: 0;
+}
+
+.glass-profile__section-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: rgba(167, 139, 250, 0.4);
+  max-width: 400px;
+  margin: 0;
+}
 
 .glass-profile__products {
   display: flex;
@@ -317,67 +408,129 @@
 
 .glass-profile__product-card {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  border-radius: 14px;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 2rem 2.4rem;
+  border-radius: 20px;
   border: 1px solid rgba(167, 139, 250, 0.15);
-  background: rgba(167, 139, 250, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(167, 139, 250, 0.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   cursor: pointer;
-  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.2s;
-  min-width: 280px;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  max-width: 520px;
+  width: 100%;
   text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-profile__product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(99, 102, 241, 0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .glass-profile__product-card:hover {
-  border-color: rgba(167, 139, 250, 0.45);
-  background: rgba(167, 139, 250, 0.1);
-  box-shadow: 0 0 24px rgba(99, 102, 241, 0.2);
-  transform: translateY(-2px);
+  border-color: rgba(167, 139, 250, 0.4);
+  background: rgba(167, 139, 250, 0.08);
+  box-shadow:
+    0 0 40px rgba(99, 102, 241, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-profile__product-card:hover::before {
+  opacity: 1;
 }
 
 .glass-profile__product-card:active {
   transform: translateY(0);
 }
 
-.glass-profile__product-info {
+.glass-profile__product-icon-wrap {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  background: rgba(167, 139, 250, 0.06);
+}
+
+.glass-profile__product-body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.6rem;
   flex: 1;
+  min-width: 0;
+}
+
+.glass-profile__product-top {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
 }
 
 .glass-profile__product-name {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   letter-spacing: -0.02em;
   color: rgba(196, 181, 253, 0.95);
 }
 
+.glass-profile__product-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(167, 139, 250, 0.7);
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  padding: 0.15rem 0.55rem;
+  border-radius: 100px;
+}
+
 .glass-profile__product-desc {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.35);
 }
 
-.glass-profile__product-arrow {
-  color: rgba(167, 139, 250, 0.4);
-  flex-shrink: 0;
-  transition: color 0.2s, transform 0.2s;
+.glass-profile__product-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(167, 139, 250, 0.55);
+  margin-top: 0.3rem;
+  transition: color 0.2s, gap 0.2s;
 }
 
-.glass-profile__product-card:hover .glass-profile__product-arrow {
-  color: rgba(167, 139, 250, 0.9);
-  transform: translateX(3px);
+.glass-profile__product-card:hover .glass-profile__product-cta {
+  color: rgba(196, 181, 253, 0.9);
+  gap: 10px;
 }
 
 @media (max-width: 600px) {
   .glass-profile__product-card {
-    min-width: 0;
-    width: 100%;
+    padding: 1.5rem 1.4rem;
+    gap: 1rem;
+  }
+
+  .glass-profile__product-icon-wrap {
+    width: 44px;
+    height: 44px;
   }
 }
